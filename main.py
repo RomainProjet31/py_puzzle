@@ -28,6 +28,7 @@ def next() -> ATH:
 
 
 ath = start()
+dt = 0
 while True:
     KeyPressed.instance().key_pressed = None
     for event in pygame.event.get():
@@ -61,10 +62,10 @@ while True:
             ath = start()
     else:
         screen.fill("purple")
-        map_loader.update(0)
+        map_loader.update(dt)
         ath.update()
         map_loader.render(screen)
         ath.render(screen)
 
     pygame.display.flip()
-    clock.tick(60)
+    dt = clock.tick(60)
