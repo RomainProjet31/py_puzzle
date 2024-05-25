@@ -7,8 +7,9 @@ from src.entities.entity import Entity
 
 class Player(Entity, Sprite):
     H_PLAYER = 32
-    W_PLAYER = 16
-
+    W_PLAYER = 32
+    _idle_line = 1
+    _max_cols = {_idle_line: 4}
     _speed = 10
     _color = (0, 0, 255)
 
@@ -24,24 +25,38 @@ class Player(Entity, Sprite):
         Sprite.__init__(
             self,
             Path(__file__).parent.parent.parent
-            / f"assets/mystic_wood/sprites/characters/player.png",
-            pygame.Vector2(288, 480),
-            pygame.Vector2(48, 48),
+            / f"assets/mystic_wood/sprites/characters/slime.png",
+            pygame.Vector2(224, 416),
+            pygame.Vector2(32, 32),
+            limits=self._max_cols,
+            scale=1.5,
         )
+        self.dest_rect = self._align_collider_and_pos()
+        self.cursor_line = self._idle_line
 
     def update(self, dt: float) -> None:
         if self.velocity.x == 0 and self.velocity.y == 0:
-            if self.cursor_line != 0:
-                self.cursor_col = self.cursor_line = 0
+            if self.cursor_line != self._idle_line:
+                self.cursor_line = self._idle_line
+                self.cursor_col = 0
+
             if self._handle_key_evt():
                 self.steps += 1
                 self.cursor_line = 3
                 self.cursor_col = 0
         Entity.update(self, dt)
+        self.dest_rect = self._align_collider_and_pos()
         Sprite.update(self, dt)
 
     def render(self, surface: pygame.Surface) -> None:
-        Sprite.render(self, surface, self.rect)
+        Sprite.render(self, surface, self.dest_rect)
+
+    def _align_collider_and_pos(self) -> pygame.rect.Rect:
+        x = self.rect.x - self.rect.w / 3.0
+        y = self.rect.y - self.rect.h / 3.0
+        w = self.rect.w
+        h = self.rect.h
+        return pygame.rect.Rect(x, y, w, h)
 
     def _handle_key_evt(self) -> bool:
         """

@@ -9,7 +9,9 @@ class Sprite:
         file_size: pygame.Vector2,
         sprite_size: pygame.Vector2,
         scale: int = 1,
+        limits: dict = {},
     ) -> None:
+        self.limits = limits
         self.cursor_col = 0
         self.cursor_line = 0
         self.clock = 0
@@ -32,10 +34,14 @@ class Sprite:
 
     def update(self, dt: float) -> None:
         self.clock += dt
-        if self.clock >= 150:
+        if self.clock >= 100:
             self.clock = 0
             self.cursor_col += 1
-            if self.cursor_col == len(self.images[self.cursor_line]):
+            limit_achieved = (
+                self.cursor_line in self.limits
+                and self.cursor_col == self.limits[self.cursor_line]
+            )
+            if self.cursor_col == len(self.images[self.cursor_line]) or limit_achieved:
                 self.cursor_col = 0
 
     def render(self, screen: pygame.Surface, rect: pygame.Rect) -> None:
