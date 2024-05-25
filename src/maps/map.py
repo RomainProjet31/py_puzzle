@@ -67,8 +67,7 @@ class Map:
             block.update(self.player)
 
         for goal in self.goals:
-            if not goal.reached:
-                goal.update(self.player)
+            goal.update(dt, self.player)
 
     def render(self, surface: Surface) -> None:
         for block in self.blocks:
@@ -84,7 +83,7 @@ class Map:
             self.player.steps > self.player.max_step
             and self.player.velocity.x == self.player.velocity.y == 0
         )
-        reached_goals = [goal for goal in self.goals if goal.reached == True]
+        reached_goals = [goal for goal in self.goals if goal.ended == True]
         won = len(reached_goals) == len(self.goals)
         if won:
             return True

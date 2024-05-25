@@ -9,7 +9,8 @@ class Player(Entity, Sprite):
     H_PLAYER = 32
     W_PLAYER = 32
     _idle_line = 1
-    _max_cols = {_idle_line: 4}
+    _move_line = 3
+    _max_cols = {_idle_line: 4, _move_line: 6}
     _speed = 10
     _color = (0, 0, 255)
 
@@ -42,7 +43,7 @@ class Player(Entity, Sprite):
 
             if self._handle_key_evt():
                 self.steps += 1
-                self.cursor_line = 3
+                self.cursor_line = self._move_line
                 self.cursor_col = 0
         Entity.update(self, dt)
         self.dest_rect = self._align_collider_and_pos()

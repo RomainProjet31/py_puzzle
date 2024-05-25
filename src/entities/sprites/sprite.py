@@ -45,7 +45,6 @@ class Sprite:
                 self.cursor_col = 0
 
     def render(self, screen: pygame.Surface, rect: pygame.Rect) -> None:
-        print(f"{self.cursor_col} {self.cursor_line} at [{rect.x}, {rect.y}]")
         screen.blit(self.images[self.cursor_line][self.cursor_col], (rect.x, rect.y))
 
     def _get_image(self, x, y, w, h, colour=(0, 0, 0)):
