@@ -1,13 +1,13 @@
 import os
 from pathlib import Path
 from pygame import Surface
+from src.maps.configuration import CONFIGURATIONS
 from src.entities.goal import Goal
 from src.entities.block import Block
 from src.entities.player import Player
 
 
 class Map:
-
     _floor_idx = "0"
     _block_idx = "1"
     _player_idx = "2"
@@ -16,7 +16,7 @@ class Map:
     _tile_size = 64
 
     def __init__(self) -> None:
-        self.map_nb = 4
+        self.map_idx = 1
         self.player: Player = None
         self.blocks: list[Block] = None
         self.goals: list[Goal] = None
@@ -24,7 +24,7 @@ class Map:
     def load_map(self, offset_y: int = 0) -> None:
         self.goals = []
         self.blocks = []
-        path = Path(__file__).parent.parent.parent / f"assets/maps/{self.map_nb}"
+        path = Path(__file__).parent.parent.parent / f"assets/maps/{self.map_idx}"
         with path.open() as current_map_file:
             i = offset_y / 64
             for line in current_map_file.readlines():
@@ -42,6 +42,7 @@ class Map:
                         self.player = Player(
                             block.rect.centerx - Player.W_PLAYER / 2,
                             block.rect.centery - Player.H_PLAYER / 2,
+                            max_step=CONFIGURATIONS[self.map_idx - 1].max_steps,
                         )
                     elif chr_idx == self._goal_idx:
                         self.goals.append(
@@ -55,11 +56,11 @@ class Map:
                 i += 1
 
     def next_map(self, offset_y: int = None) -> None:
-        self.map_nb += 1
+        self.map_idx += 1
         self.load_map(offset_y)
 
     def has_next(self) -> bool:
-        path = Path(__file__).parent.parent.parent / f"assets/maps/{self.map_nb}"
+        path = Path(__file__).parent.parent.parent / f"assets/maps/{self.map_idx}"
         return os.path.isfile(path)
 
     def update(self, dt: int) -> None:

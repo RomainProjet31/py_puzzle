@@ -11,7 +11,7 @@ pygame.init()
 screen = pygame.display.set_mode((max_cols * 64, max_lines * 64 + ATH.ATH_HEIGHT))
 # Initializing Color
 
-pygame.display.set_caption("Hello World")
+pygame.display.set_caption("PY_PUZZLE RomainProjet31")
 clock = pygame.time.Clock()
 map_loader = Map()
 ath = None
