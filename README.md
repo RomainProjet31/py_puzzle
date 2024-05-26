@@ -1,7 +1,13 @@
 # Summary
-This project is a simple side project to share an idea about a puzzle game.
-This project will have sprites, tutorial and a more ergonomic GUI.
-This project is personal. Thus you can copy this code, however you cannot commit.
+This project :
+* is a simple side project to share an idea about a puzzle game.
+* is personal, thus you can copy this code, however you cannot commit.
+
+# Installation
+
+You need to have Python 3.12.1 installed (see : https://www.python.org/downloads/release/python-3121/)
+Once you have done that, you will have to launch the following command : 
+> $ pip install -r requirements.txt
 
 
 # Thanks
