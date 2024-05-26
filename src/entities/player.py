@@ -2,7 +2,7 @@ from pathlib import Path
 import pygame
 from src.sounds.sound_manager import SOUND_MANAGER
 from src.entities.sprites.sprite import Sprite
-from src.events.keys import KeyPressed
+from src.events.keys import KEY_PRESSED
 from src.entities.entity import Entity
 
 
@@ -67,16 +67,16 @@ class Player(Entity, Sprite):
         return: True if a valid key has been pressed
         """
         valid_key = False
-        if KeyPressed.instance().key_pressed == pygame.K_RIGHT:
+        if KEY_PRESSED.key_pressed == pygame.K_RIGHT:
             self.velocity.x = 1
             valid_key = True
-        elif KeyPressed.instance().key_pressed == pygame.K_DOWN:
+        elif KEY_PRESSED.key_pressed == pygame.K_DOWN:
             self.velocity.y = 1
             valid_key = True
-        elif KeyPressed.instance().key_pressed == pygame.K_LEFT:
+        elif KEY_PRESSED.key_pressed == pygame.K_LEFT:
             self.velocity.x = -1
             valid_key = True
-        elif KeyPressed.instance().key_pressed == pygame.K_UP:
+        elif KEY_PRESSED.key_pressed == pygame.K_UP:
             self.velocity.y = -1
             valid_key = True
 

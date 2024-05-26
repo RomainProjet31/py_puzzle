@@ -20,7 +20,7 @@ class _SoundManager:
         self.channels: dict[str, pygame.mixer.Channel] = {}
         pygame.mixer.init()
 
-    def play(self, sound_name: str) -> None:
+    def play(self, sound_name: str, volume: float = 1) -> None:
         """
         :param sound_name -> the name of the file with its extension
         """
@@ -31,6 +31,7 @@ class _SoundManager:
         channel = self.channels[sound_name]
         if not channel.get_busy():
             channel.play(sound)
+            channel.set_volume(volume)
 
     def _load(self, sound_name: str) -> pygame.mixer.Sound:
         self.channels[sound_name] = pygame.mixer.Channel(len(self.sounds))

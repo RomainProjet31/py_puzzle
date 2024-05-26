@@ -1,13 +1,15 @@
 import pygame, sys
 
-from src.events.keys import KeyPressed
+pygame.init()  # BAE
+
+from src.events.keys import KEY_PRESSED
 from src.maps.map import Map
 from src.ui.ath import ATH
 
 max_lines = 7
 max_cols = 10
 
-pygame.init()
+
 screen = pygame.display.set_mode((max_cols * 64, max_lines * 64 + ATH.ATH_HEIGHT))
 # Initializing Color
 
@@ -30,15 +32,12 @@ def next() -> ATH:
 ath = start()
 dt = 0
 while True:
-    KeyPressed.instance().key_pressed = None
+    KEY_PRESSED.key_pressed = None
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            KeyPressed.instance().key_pressed = event.key
+            KEY_PRESSED.key_pressed = event.key
 
-        if (
-            event.type == pygame.QUIT
-            or KeyPressed.instance().key_pressed == pygame.K_ESCAPE
-        ):
+        if event.type == pygame.QUIT or KEY_PRESSED.key_pressed == pygame.K_ESCAPE:
             pygame.quit()
             sys.exit()
 
@@ -58,7 +57,7 @@ while True:
             else:
                 pygame.quit()
                 sys.exit()
-        elif ath.flg_game_over and KeyPressed.instance().key_pressed == pygame.K_r:
+        elif ath.flg_game_over and KEY_PRESSED.key_pressed == pygame.K_r:
             ath = start()
     else:
         screen.fill("purple")
