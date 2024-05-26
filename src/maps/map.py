@@ -12,10 +12,11 @@ class Map:
     _block_idx = "1"
     _player_idx = "2"
     _goal_idx = "3"
+    _magic_block = "4"
     _tile_size = 64
 
     def __init__(self) -> None:
-        self.map_nb = 1
+        self.map_nb = 4
         self.player: Player = None
         self.blocks: list[Block] = None
         self.goals: list[Goal] = None
@@ -33,8 +34,9 @@ class Map:
 
                     x = j * self._tile_size
                     y = i * self._tile_size
+                    is_magic = chr_idx == self._magic_block
 
-                    block = Block(x, y, chr_idx == self._block_idx)
+                    block = Block(x, y, chr_idx == self._block_idx, is_magic)
                     self.blocks.append(block)
                     if chr_idx == self._player_idx:
                         self.player = Player(

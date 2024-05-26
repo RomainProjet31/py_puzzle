@@ -1,13 +1,14 @@
 from pathlib import Path
 import pygame
+from src.sounds.sound_manager import SOUND_MANAGER
 from src.entities.sprites.sprite import Sprite
 from src.events.keys import KeyPressed
 from src.entities.entity import Entity
 
 
 class Player(Entity, Sprite):
-    H_PLAYER = 32
-    W_PLAYER = 32
+    H_PLAYER = 64
+    W_PLAYER = 64
     _idle_line = 1
     _move_line = 3
     _max_cols = {_idle_line: 4, _move_line: 6}
@@ -30,7 +31,7 @@ class Player(Entity, Sprite):
             pygame.Vector2(224, 416),
             pygame.Vector2(32, 32),
             limits=self._max_cols,
-            scale=1.5,
+            scale=2,
         )
         self.dest_rect = self._align_collider_and_pos()
         self.cursor_line = self._idle_line
@@ -45,12 +46,14 @@ class Player(Entity, Sprite):
                 self.steps += 1
                 self.cursor_line = self._move_line
                 self.cursor_col = 0
+        else:
+            SOUND_MANAGER.play("snow-step-2-102324.mp3")
         Entity.update(self, dt)
         self.dest_rect = self._align_collider_and_pos()
         Sprite.update(self, dt)
 
     def render(self, surface: pygame.Surface) -> None:
-        Sprite.render(self, surface, self.dest_rect)
+        Sprite.render(self, surface, self.rect)
 
     def _align_collider_and_pos(self) -> pygame.rect.Rect:
         x = self.rect.x - self.rect.w / 3.0

@@ -13,7 +13,6 @@ class ATH:
         self.surface_size = (w_surface, h_surface)
         self.font = pygame.font.SysFont(None, 48)
         self.bg = pygame.rect.Rect(0, 0, w_surface, self.ATH_HEIGHT)
-        self.step_remaining = None
 
         self.screen_bg = pygame.rect.Rect(0, 0, w_surface, h_surface)
         self.game_over_img = self.font.render(
@@ -26,24 +25,22 @@ class ATH:
 
         self.flg_game_over = False
         self.flg_game_won = False
+        self.rect_steps = []
 
     def update(self) -> None:
-        self.step_remaining = self.font.render(
-            f"{self.map.player.max_step - self.map.player.steps} steps remaining",
-            True,
-            (255, 255, 255),
-        )
+        self._compute_steps()
 
     def render(self, surface: pygame.Surface) -> None:
-        if not self.flg_game_over and not self.flg_game_won:
-            pygame.draw.rect(surface, (146, 146, 146), self.bg)
-            surface.blit(self.step_remaining, (10, 10))
-        else:
+        if self.flg_game_over or self.flg_game_won:
             pygame.draw.rect(surface, (0, 0, 0), self.screen_bg)
             if self.flg_game_over:
                 surface.blit(self.game_over_img, self.game_over_pos)
             elif self.flg_game_won:
                 surface.blit(self.game_won_img, self.game_won_pos)
+        else:
+            pygame.draw.rect(surface, (146, 146, 146), self.bg)
+            for rect in self.rect_steps:
+                pygame.draw.rect(surface, (0, 0, 0), rect)
 
     def _get_txt_pos(self, txt: str) -> tuple:
         w_goi, h_goi = self.font.size(txt)
@@ -51,3 +48,12 @@ class ATH:
             self.surface_size[0] / 2 - w_goi / 2,
             self.surface_size[1] / 2 - h_goi / 2,
         )
+
+    def _compute_steps(self) -> None:
+        x = 10
+        self.rect_steps = []
+        steps_left = self.map.player.max_step - self.map.player.steps
+        for _ in range(0, steps_left):
+            rect = pygame.rect.Rect(x, 10, 16, 32)
+            self.rect_steps.append(rect)
+            x += rect.w + 5
